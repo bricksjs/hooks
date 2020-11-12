@@ -1,7 +1,5 @@
 ---
 title: useDetail
-# group:
-#   title: Hooks
 ---
 
 ## 基本用法
