@@ -1,17 +1,17 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { startStop } from '../contants/fn';
 
-export interface IntervalOpts {
+export interface TimeoutOpts {
   /** 首次是否立即执行  */
   immediate?: boolean;
   /** 是否可以手动触发: true: 自动, false: 手动 */
   manual?: boolean;
 }
 
-const useInterval = (
+export default (
   fn: () => void,
   delay: undefined | null | number,
-  opts?: IntervalOpts,
+  opts?: TimeoutOpts,
 ) => {
   const timerRef = useRef<number | null>(null);
   const ref = useRef<StartStop>(startStop);
@@ -21,7 +21,7 @@ const useInterval = (
 
   const stop = useCallback(() => {
     if (timerRef.current) {
-      clearInterval(timerRef.current);
+      clearTimeout(timerRef.current);
       timerRef.current = null;
     }
   }, []);
@@ -29,7 +29,7 @@ const useInterval = (
     if (typeof delay === 'number') {
       stop();
       // @ts-ignore
-      timerRef.current = setInterval(() => {
+      timerRef.current = setTimeout(() => {
         fnRef.current?.();
       }, delay);
     }
@@ -53,5 +53,3 @@ const useInterval = (
 
   return { ...ref.current } as const;
 };
-
-export default useInterval;
